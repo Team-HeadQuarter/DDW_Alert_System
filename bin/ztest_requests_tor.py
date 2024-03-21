@@ -1,4 +1,4 @@
-from requests_tor import RequestsTor
+from ztest_requests_tor import RequestsTor
 
 
 rt = RequestsTor(tor_ports=(9000, 9001, 9002, 9003, 9004), tor_cport=9151, password="dlwlstn",
