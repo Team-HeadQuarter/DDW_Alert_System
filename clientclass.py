@@ -4,7 +4,7 @@ import os
 import shutil
 import schedule
 
-from sites import leakbase_d
+from sites import leakbase
 import alert
 from constant import DATETIME_FORMAT
 
@@ -55,12 +55,13 @@ class Client:
         print(f"[+] Start update({datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')})")
         self.remain_time = datetime.timedelta(minutes=10)
         print("[*] Update information...")
-        data = leakbase_d.crawl(self.keywords)
+        data = leakbase.crawl(self.keywords)
         if len(data) == 0:
             print("[+] No data detected.")
         else:
             print(f"[+] {len(data)} element(s) detected")
-            alert.alert(data)
+            print(data)
+            # alert.alert(data)
         self.previous_update = self.last_update
         self.last_update = datetime.datetime.now()
         print("[+] Update done!")
@@ -102,7 +103,7 @@ class Client:
         if True:
             print(f"[+] Alarm platform ID set.({id})")
         else:
-            print(f"[-] Cannot find alarm platform ID set.({id})")
+            print(f"[-] Cannot find alarm platform ID.({id})")
 
 
     def get_keywords(self) -> None:

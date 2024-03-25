@@ -1,15 +1,6 @@
-API_TOKEN = "{telegram_bot_token}"
-
 INFO_TYPE = {"mix": 0, "combo": 0}
 
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
-
-PROXIES = {
-    "http": "socks5://127.0.0.1:9000",
-    "https": "socks5://127.0.0.1:9000"
-}
-
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36"
 
 ALARM_MARK = ["🔴 Critical Alert", "🟡 Serious Alert", "🟢 Minor Alert", "⚫️ Unknown Alert"]
 CRITICAL = 0
@@ -25,7 +16,7 @@ INFO = {
         "date": "2024-01-01T02:03:27+0300",
         "url": "https://leakbase.io/threads/155k-korea-mix.17090/",
         "thread_id": 17090,
-        "title": "155K Korea Mix"
+        "title": "155K Korea Mix",
         "user_id": 8105,
         "user_name": "dracoola",
         "user_contents": "https://leakbase.io/members/dracoola.8105/#recent-content"
