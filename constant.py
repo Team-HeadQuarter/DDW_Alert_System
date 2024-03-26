@@ -1,4 +1,4 @@
-INFO_TYPE = {"mix": 0, "combo": 0}
+INFO_TYPE = {}
 
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 

@@ -1,6 +1,6 @@
 __author__ = "TeamHeadQuarter (ymiwm0322@kakao.com)"
-__version__ = "0.02"
-__last_modification__ = "2024-03-20"
+__version__ = "0.10"
+__last_modification__ = "2024-03-26"
 
 
 import datetime

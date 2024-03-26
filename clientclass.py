@@ -65,7 +65,7 @@ class Client:
         self.previous_update = self.last_update
         self.last_update = datetime.datetime.now()
         print("[+] Update done!")
-        print("[+] Update after 10 mins")
+        print("[+] Update after 10 mins...")
         print("-"*64)
 
 

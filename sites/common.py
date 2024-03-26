@@ -1,5 +1,7 @@
+# RequestsTor?
 import requests
-from requests_tor import RequestsTor
+from stem import Signal
+from stem.control import Controller
 
 PROXIES = {
     "http": "socks5://127.0.0.1:9050",
@@ -11,7 +13,6 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 def establish_session(url: str):
     cookies = get_cookies(url)
     cookies = set_cookies(cookies)
-
     return cookies
 
 
@@ -42,20 +43,8 @@ def set_cookies(cookies):
     return cookies
 
 
-def get_data(url_list: set, cookies=None) -> set:
-    crawled_data = set()
-    requeststor = RequestsTor()
-    for url in url_list:
-        print(f"[*] Requesting URL: {url}")
-        response = requeststor.get(url, cookies=cookies)
-        if response.status_code == 200:
-            print(f"[+] Data crawled success")
-            crawled_data.update(response.text)
-        else:
-            print(f"[-] Failed to crawl URL")
-
-    return crawled_data
-
-
-def check_diff(data: dict) -> dict:
-    pass
+# WIP
+def renew_connection():
+    with Controller.from_port(port=9051) as controller:
+        controller.authenticate(password="password")
+        controller.signal(Signal.NEWNYM)
