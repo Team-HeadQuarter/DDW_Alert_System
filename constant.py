@@ -1,4 +1,11 @@
-INFO_TYPE = {}
+TOR_PATH = "/Applications/Tor Browser.app/Contents/MacOS/firefox"
+
+PROXIES = {
+    "http": "socks5://127.0.0.1:9050",
+    "https": "socks5://127.0.0.1:9050"
+}
+
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36"
 
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 

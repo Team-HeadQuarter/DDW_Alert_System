@@ -55,13 +55,12 @@ class Client:
         print(f"[+] Start update({datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')})")
         self.remain_time = datetime.timedelta(minutes=10)
         print("[*] Update information...")
-        data = leakbase.crawl(self.keywords)
-        if len(data) == 0:
+        data_path_set = leakbase.crawl(self.keywords)
+        if len(data_path_set) == 0:
             print("[+] No data detected.")
         else:
-            print(f"[+] {len(data)} element(s) detected")
-            print(data)
-            # alert.alert(data)
+            print(f"[+] {len(data_path_set)} element(s) detected")
+            alert.alert(data_path_set, self.platform_id)
         self.previous_update = self.last_update
         self.last_update = datetime.datetime.now()
         print("[+] Update done!")
@@ -97,13 +96,6 @@ class Client:
             print(f"[+] Profile deleted successfully.({filepath})")
         else:
             print(f"[-] Profile not exist.({self.id})")
-
-
-    def set_platform_id(self, id: str) -> None:
-        if True:
-            print(f"[+] Alarm platform ID set.({id})")
-        else:
-            print(f"[-] Cannot find alarm platform ID.({id})")
 
 
     def get_keywords(self) -> None:

@@ -8,6 +8,7 @@ import pyfiglet
 import argparse
 
 import clientclass
+import telegram
 
 
 def main():
@@ -58,6 +59,7 @@ def main():
         if args.rkey:
             client.reset_keywords()
         if args.start:
+            telegram.user_identify()
             client.start()
         client.save_profile(True)
 
