@@ -17,19 +17,20 @@ from selenium.webdriver.common.keys import Keys
 from constant import TOR_PATH, PROXIES, DATETIME_FORMAT
 
 
+# Temporary weight
 LEAKBASE_INFO_TYPE = {
     # Type File
-    "Bak": 0, "Json": 0, "HTML": 0, "XLSX": 0, "Doc": 0, "Sql": 0, "Csv": 0 ,
+    "Bak": 1, "Json": 5, "HTML": 2, "XLSX": 6, "Doc": 4, "Sql": 8, "Csv": 7 ,
     # Log
-    "Stealer": 0 ,"Backup": 0 ,"Url:User:Pw": 0 ,"Logs": 0 ,
+    "Stealer": 9 ,"Backup": 1 ,"Url:User:Pw": 8 ,"Logs": 2 ,
     # Database
-    "EU": 0, "Usa": 0, "No Pass": 0, "Dehashed": 0, "Num:Pass": 0, "Log:Pass": 0, "Mail:Pass": 0, "Btc": 0, "Game": 0, "Valid": 0, "Cloud": 0, "Hash": 0, "Mix": 0, "Shop": 0,
+    "EU": 1, "Usa": 5, "No Pass": 0, "Dehashed": 0, "Num:Pass": 0, "Log:Pass": 0, "Mail:Pass": 0, "Btc": 0, "Game": 0, "Valid": 0, "Cloud": 0, "Hash": 0, "Mix": 0, "Shop": 0,
     # Accounts
     "Nas": 0, "FTP": 0, "WP": 0, "Mega.nz": 0, "Accs": 0, "Cpanel": 0, "Hosting": 0, "Cookies": 0, "PWD list": 0,
     # Forum
     "Request": 0, "Questions": 0, "News": 0,
     # Ungrouped
-    "© Chucky": 0, "Closed": 0, "Link Dead": 0, "Premium": 0, "Credits": 0, "Http/s": 0, "Software": 0, "Repeat": 0, "Hacking": 0, "Methods": 0, "Other": 0, "Socks 4": 0, "Socks 5": 0, "Cracked": 0, "Config": 0
+    "© Chucky": 10, "Closed": 0, "Link Dead": 0, "Premium": 10, "Credits": 0, "Http/s": 0, "Software": 0, "Repeat": 0, "Hacking": 0, "Methods": 0, "Other": 0, "Socks 4": 0, "Socks 5": 0, "Cracked": 0, "Config": 0
 }
 
 
@@ -151,8 +152,8 @@ def process_data(raw_data_path_set: set) -> set:
         bs = BeautifulSoup(raw_data, 'html.parser')
         domain = "leakbase"
         upload_date = datetime.datetime(1900, 1, 1, 0, 0, 0)
-        url = str()
         title = str()
+        url = str()
         tags = list()
         thread_id = int()
         user_id = int()
@@ -168,18 +169,32 @@ def process_data(raw_data_path_set: set) -> set:
             raw_tags = title_tags[1].find_all("span", class_="prefix-arbitors")
             for tag in raw_tags:
                 tags.append(tag.text)
+            contents = bs.find()
             thread_id = url.rstrip('/').rsplit('.', 1)[1]
             user_id_name = user_date.find("a", class_="username u-concealed")
             user_id = int(user_id_name["data-user-id"])
             user_name = user_id_name.text
-            user_contents = f"https://leakbase.io/members/{user_name}.{user_id}/#recent-content"  
+            user_contents = f"https://leakbase.io/members/{user_name}.{user_id}/#recent-content"
+
+            # Need improvement this algorithm(Not quite accurate)
+            if len(tags) == 0:
+                severity = -1
+            else:
+                severity = 0
+                for tag in tags:
+                    severity += LEAKBASE_INFO_TYPE[tag]
+                severity = round(severity / len(tags) * 10)
+                print(severity)
+
             data = {
                 f"{domain}_{thread_id}": {
+                    "severity": severity,
                     "upload_date": upload_date,
                     "url": url,
                     "thread_id": thread_id,
                     "title": title,
                     "tags": tags,
+                    "contents": contents,
                     "user_id": user_id,
                     "user_name": user_name,
                     "user_contents": user_contents
