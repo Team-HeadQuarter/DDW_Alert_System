@@ -24,7 +24,7 @@ class Client:
         flag = False
 
         if self.platform_id == "":
-            print(f"[-] There is no alarm platform account info.(Update with \'-sp\' option)")
+            print(f"[-] There is no alarm platform account info.(Send message to telegram bot.)")
             flag = True
         if len(self.keywords) == 0:
             print(f"[-] There is no keyword.(Update with \'-ak\' option)")
@@ -74,13 +74,13 @@ class Client:
 
 
     def get_profile(self):
-        filepath = self.id + "/profile.json"
+        filepath = f"users/{self.id}/profile.json"
         with open(filepath, 'r') as f:
             print(f.read())
 
 
     def create_profile(self):
-        filepath = self.id + "/profile.json"
+        filepath = f"users/{self.id}/profile.json"
         if not (os.path.isdir(self.id) and os.path.isfile(filepath)):
             os.mkdir(self.id)
             self.save_profile(False)
@@ -90,7 +90,7 @@ class Client:
 
 
     def delete_profile(self):
-        filepath = self.id
+        filepath = f"users/{self.id}"
         if os.path.isdir(filepath):
             shutil.rmtree(filepath)
             print(f"[+] Profile deleted successfully.({filepath})")
@@ -134,7 +134,7 @@ class Client:
 
 
     def load_profile(self) -> bool:
-        filepath = self.id + "/profile.json"
+        filepath = f"users/{self.id}/profile.json"
         try:
             with open(filepath, 'r') as f:
                 info = json.load(f)
@@ -150,7 +150,7 @@ class Client:
 
 
     def save_profile(self, flag: bool) -> None:
-        filepath = self.id + "/profile.json"
+        filepath = f"users/{self.id}/profile.json"
         client = {
             "id": self.id,
             "keywords": sorted(list(self.keywords)),

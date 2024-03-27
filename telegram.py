@@ -20,7 +20,7 @@ def user_identify():
                 user_profile["platform_id"] = chat_id
                 user_id = user_profile["id"]
                 json.dump(user_profile, f)
-                print(f"[+] (Telegram)User {user_id} is updated")
+                print(f"[+] (Telegram)User {user_id} is updated.")
 
 
 def get_updates():
