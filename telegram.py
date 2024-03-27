@@ -38,9 +38,9 @@ def get_updates():
         print("[-] (Telegram)Request getUpdates failed.")
         return []
     updates = response.json().get("result")
-    if updates == []:
+    if not updates:
         print("[+] (Telegram)No new updates.")
-        return updates
+        return []
     update_id = updates[-1].get("update_id") + 1
     print("[+] (Telegram)Update users id.")
     with open(offset_filepath, 'w') as f:
@@ -65,7 +65,7 @@ def send_file(chat_id: str, filepath: str):
         return
     with open(filepath, 'rb') as f:
         report_byte = f.read()
-    filename = filepath.rsplit('/')[1]
+    filename = filepath.rsplit('/', 1)[1]
     files = {"files": (filename, report_byte)}
     url = TELEGRAM_API_ADDRESS + f"/sendDocument?chat_id={chat_id}"
     response = requests.post(url, files=files)
