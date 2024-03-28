@@ -22,17 +22,17 @@ URL = "https://leakbase.io"
 # Temporary weight
 LEAKBASE_INFO_TYPE = {
     # Type File
-    "Bak": 1, "Json": 5, "HTML": 2, "XLSX": 6, "Doc": 4, "Sql": 8, "Csv": 7 ,
+    "Bak": 1, "Json": 5, "HTML": 2, "XLSX": 6, "Doc": 4, "Sql": 8, "Csv": 7,
     # Log
-    "Stealer": 9 ,"Backup": 1 ,"Url:User:Pw": 8 ,"Logs": 2 ,
+    "Stealer": 9 ,"Backup": 1 ,"Url:User:Pw": 8 ,"Logs": 2,
     # Database
-    "EU": 1, "Usa": 5, "No Pass": 0, "Dehashed": 0, "Num:Pass": 0, "Log:Pass": 0, "Mail:Pass": 0, "Btc": 0, "Game": 0, "Valid": 0, "Cloud": 0, "Hash": 0, "Mix": 0, "Shop": 0,
+    "EU": 1, "Usa": 5, "No Pass": 4, "Dehashed": 8, "Num:Pass": 7, "Log:Pass": 6, "Mail:Pass": 8, "Btc": 5, "Game": 1, "Valid": 10, "Cloud": 8, "Hash": 5, "Mix": 8, "Shop": 4,
     # Accounts
-    "Nas": 0, "FTP": 0, "WP": 0, "Mega.nz": 0, "Accs": 0, "Cpanel": 0, "Hosting": 0, "Cookies": 0, "PWD list": 0,
+    "Nas": 7, "FTP": 8, "WP": 5, "Mega.nz": 5, "Accs": 0, "Cpanel": 0, "Hosting": 6, "Cookies": 7, "PWD list": 10,
     # Forum
-    "Request": 0, "Questions": 0, "News": 0,
+    "Request": 3, "Questions": 2, "News": 4,
     # Ungrouped
-    "© Chucky": 10, "Closed": 0, "Link Dead": 0, "Premium": 10, "Credits": 0, "Http/s": 0, "Software": 0, "Repeat": 0, "Hacking": 0, "Methods": 0, "Other": 0, "Socks 4": 0, "Socks 5": 0, "Cracked": 0, "Config": 0
+    "© Chucky": 10, "Closed": 1, "Link Dead": 0, "Premium": 10, "Credits": 7, "Http/s": 3, "Software": 8, "Repeat": 2, "Hacking": 9, "Methods": 9, "Other": 3, "Socks 4": 1, "Socks 5": 2, "Cracked": 3, "Config": 1
 }
 
 
@@ -67,6 +67,7 @@ def get_url_set(keywords: set) -> set:
     wait = WebDriverWait(driver, 30)
     time.sleep(1)
 
+    # # Connect with tor browser
     # try:
     #     alert = wait.until(expected_conditions.alert_is_present())
     #     alert.dismiss()
@@ -80,17 +81,32 @@ def get_url_set(keywords: set) -> set:
 
     for keyword in keywords:
         try:
+            # I think using time.sleep() is not a precise method...
+            # Any possible refactoring?(implicitly/explicitly_wait etc.)
             element_xpath = '//*[@id="quickSearchTitle"]'
-            # Check last loaded element and continue
             element = wait.until(expected_conditions.visibility_of_element_located((By.XPATH, element_xpath)))
             print(f"[+] Page loaded(Keyword: {keyword})")
-            element.click()
+
             time.sleep(1)
+
+            element.click()
             driver.execute_script("arguments[0].setAttribute('value', arguments[1])", element, keyword)
             element.send_keys(Keys.RETURN)
-            # I think using time.sleep() is not a precise method...
-            # Any possible refactoring?(implicitly/explicitly_wait)
+
             time.sleep(1)
+            
+            no_results_xpath = '/html/body/div[1]/div[3]/div/div[7]/div[1]/div/div[2]/div/div/div/div'
+            wait.until(expected_conditions.presence_of_element_located((By.XPATH, no_results_xpath)))
+
+            try:
+                no_results_element = driver.find_element(By.XPATH, no_results_xpath)
+                if no_results_element:
+                    no_results_text = no_results_element.get_attribute('innerText')
+                    if "No results found." in no_results_text:
+                        print(f"[+] No results found for keyword: {keyword}")
+                        continue
+            except NoSuchElementException:
+                pass   
             
             search_results_xpath = '//*[@id="quicksearch-result"]/descendant::a'
             wait.until(expected_conditions.presence_of_element_located((By.XPATH, search_results_xpath)))
@@ -121,6 +137,7 @@ def check_diff(urls: set) -> set:
         thread_id = url.rstrip('/').rsplit('.', 1)[1]
         filepath = f"data/leakbase/{thread_id}.json"
         if os.path.isfile(filepath):
+            print(f"[+] leakbase_{thread_id} is already crawled.")
             discard_set.add(url)
     urls -= discard_set
 
@@ -180,12 +197,15 @@ def process_data(raw_data_path_set: set) -> set:
             # Need improvement this algorithm(Not quite accurate)
             if len(tags) == 0:
                 severity = -1
+                tags = "No Data"
             else:
                 severity = 0
                 for tag in tags:
                     severity += LEAKBASE_INFO_TYPE[tag]
                 severity = round(severity / len(tags) * 10)
+                # Algorithm not proved.
                 # print(severity)
+                tags = str(tags)[1:-1].replace('\'', '')
 
             data = {
                 f"{domain}_{thread_id}": {

@@ -6,6 +6,7 @@ import schedule
 
 from sites import leakbase, blacksuit
 import alert
+import telegramapi
 from constant import DATETIME_FORMAT
 
 
@@ -60,10 +61,10 @@ class Client:
         data_path_set |= blacksuit.crawl(self.keywords)
         if len(data_path_set) == 0:
             print("[+] No data detected.")
+            message = f"🔘 No data detected.\nChecked time: {datetime.datetime.now().strftime(DATETIME_FORMAT)}"
+            telegramapi.send_message(self.platform_id, message)
         else:
             print(f"[+] {len(data_path_set)} element(s) detected")
-            for data_path in data_path_set:
-                print(data_path)
             alert.alert(data_path_set, self.platform_id)
         self.previous_update = self.last_update
         self.last_update = datetime.datetime.now()

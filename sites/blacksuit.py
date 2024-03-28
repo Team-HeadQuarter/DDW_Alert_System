@@ -43,6 +43,7 @@ def check_diff(card_id_set: set) -> set:
     for card_id in card_id_set:
         filepath = f"data/blacksuit/{card_id}.json"
         if os.path.isfile(filepath):
+            print(f"[+] blacksuit_{card_id} is already crawled.")
             discard_set.add(card_id)
     card_id_set -= discard_set
 

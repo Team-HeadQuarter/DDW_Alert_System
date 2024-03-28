@@ -6,13 +6,12 @@ from telegramapi import send_message, send_file
 
 
 def alert(data_path_set: set, platform_id: str):
-    if not data_path_set:
-        print("[+] No alert information exist.")
-        return
     for data_path in data_path_set:
-        id = data_path.rsplit('/', 1)[1].rsplit('.', 1)[0]
+        divide_path = data_path.rsplit('/', 2)
+        domain = divide_path[1]
+        id = divide_path[2].rsplit('.', 1)[0]
         message = make_alert(data_path)
-        print(f"[*] Sending {id}...")
+        print(f"[*] Sending message({domain}_{id})...")
         send_message(platform_id, message)
     # make_report()
     # send_file(filepath, platform_id)
@@ -47,7 +46,6 @@ def make_alert(data_path: str) -> str:
     else:
         alarm_mark_index = UNKNOWN
 
-    tags = str(tags)[1:-1].replace('\'', '')
     # There is some massive contents post exists, so that telegram can't send message.(MAX 4KB)
     # So contents temporarily excluded.
     # You can find original message form at bottom of codes.

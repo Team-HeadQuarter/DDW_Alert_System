@@ -18,34 +18,19 @@ LOW = 4
 UNKNOWN = 5
 
 """
-Alert Data Format(Dictionary)
-INFO = {
-    "leakbase_17090": {
-        "domain": "https://leakbase.io",
-        "date": "2024-01-01T02:03:27+0300",
-        "url": "https://leakbase.io/threads/155k-korea-mix.17090/",
-        "thread_id": 17090,
-        "title": "155K Korea Mix",
-        "user_id": 8105,
-        "user_name": "dracoola",
-        "user_contents": "https://leakbase.io/members/dracoola.8105/#recent-content"
-    }
-}
-
-Report Data Format(JSON -> PDF)
-
-# Alert Data에 일치하는 ID가 없으면 status=false로 변경
-Archive Data Format(JSON)
+Alert Data Format(JSON)
 {
-    "leakbase_17090": {
-        "status": True,
-        "domain": "LeakBase - Official Community Forum",
-        "date": "2024-01-01T02:03:27+0300",
-        "thread_id": 17090,
-        "url": "https://leakbase.io/threads/155k-korea-mix.17090/",
-        "user_id": 8105,
-        "user_name": "dracoola",
-        "user_contents": "https://leakbase.io/members/dracoola.8105/#recent-content"
+    "blacksuit_F0wc4NyFvGDqOkjK": {
+        "severity": -1,
+        "upload_date": "No Data",
+        "url": "http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?id=F0wc4NyFvGDqOkjK",
+        "post_id": "F0wc4NyFvGDqOkjK",
+        "title": "GOLFZON",
+        "tags": "No Data",
+        "contents": "GOLFZON is a leading global culture of indoor golf simulator. Awarded four consecutive years from 2017 to 2020 as best golf simulator in Golf Digest's Editor's Choice, GOLFZON has a presence in 62 countries with 6,200 commercial sites around the world\n(Victim URL: http://www.golfzon.com)",
+        "user_id": 1,
+        "user_name": "BLACK SUIT",
+        "user_contents": "http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion"
     }
 }
 """
