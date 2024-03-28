@@ -57,7 +57,7 @@ class Client:
         self.remain_time = datetime.timedelta(minutes=10)
         print("[*] Update information...")
         data_path_set |= leakbase.crawl(self.keywords)
-        # data_path_set |= blacksuit.crawl(self.keywords)
+        data_path_set |= blacksuit.crawl(self.keywords)
         if len(data_path_set) == 0:
             print("[+] No data detected.")
         else:

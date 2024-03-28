@@ -77,9 +77,9 @@ def get_url_set(keywords: set) -> set:
     #     print("[-] Tor browser connection timeout.")
     #     return set()
 
-    try:
-        element_xpath = '//*[@id="quickSearchTitle"]'
-        for keyword in keywords:
+    for keyword in keywords:
+        try:
+            element_xpath = '//*[@id="quickSearchTitle"]'
             # Check last loaded element and continue
             element = wait.until(expected_conditions.visibility_of_element_located((By.XPATH, element_xpath)))
             print(f"[+] Page loaded(Keyword: {keyword})")
@@ -103,12 +103,10 @@ def get_url_set(keywords: set) -> set:
                 if href_value and href_value.startswith("/threads/"):
                     full_url = domain + href_value
                     thread_links_set.add(full_url)
-    except TimeoutException as e:
-        print(f"[-] Timeout.({e})")
-        return set()
-    except NoSuchElementException as e:
-        print(f"[-] Cannot find element.({e})")
-        return set()
+        except TimeoutException as e:
+            print(f"[-] Timeout.(Keyword: {keyword})")
+        except NoSuchElementException as e:
+            print(f"[-] Cannot find element.({keyword})")
 
     driver.quit()
 

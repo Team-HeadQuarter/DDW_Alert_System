@@ -23,7 +23,7 @@ def get_card_id(keywords: set) -> set:
     for keyword in keywords:
         data = {"search": keyword}
         response = requests.post(URL, proxies=PROXIES, data=data)
-        print(f"[*] Requesting URL: {URL}(Keyword: {keyword})")
+        print(f"[*] Request search.(Keyword: {keyword})")
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
             try:

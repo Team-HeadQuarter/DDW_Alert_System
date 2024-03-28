@@ -11,7 +11,6 @@ def alert(data_path_set: set, platform_id: str):
         return
     for data_path in data_path_set:
         message = make_alert(data_path)
-        print(message)
         send_message(message, platform_id)
     # make_report()
     # send_file(filepath, platform_id)
