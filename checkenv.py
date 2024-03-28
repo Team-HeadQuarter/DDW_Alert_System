@@ -1,7 +1,7 @@
 import os
 
 
-SITES = ["leakbase"]
+SITES = ["leakbase", "blacksuit"]
 
 
 def check_environment():

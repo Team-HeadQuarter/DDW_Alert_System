@@ -85,6 +85,7 @@ def get_url_set(keywords: set) -> set:
             element = wait.until(expected_conditions.visibility_of_element_located((By.XPATH, element_xpath)))
             print(f"[+] Page loaded(Keyword: {keyword})")
             element.click()
+            time.sleep(1)
             driver.execute_script("arguments[0].setAttribute('value', arguments[1])", element, keyword)
             element.send_keys(Keys.RETURN)
             # I think using time.sleep() is not a precise method...
@@ -184,7 +185,7 @@ def process_data(raw_data_path_set: set) -> set:
                 for tag in tags:
                     severity += LEAKBASE_INFO_TYPE[tag]
                 severity = round(severity / len(tags) * 10)
-                print(severity)
+                # print(severity)
 
             data = {
                 f"{domain}_{thread_id}": {

@@ -9,7 +9,7 @@ import argparse
 
 import checkenv
 import clientclass
-import telegram
+import telegramapi
 
 
 def main():
@@ -59,7 +59,7 @@ def main():
         if args.rkey:
             client.reset_keywords()
         if args.start:
-            telegram.user_identify()
+            telegramapi.user_identify()
             client.start()
         client.save_profile(True)
 

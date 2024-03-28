@@ -2,7 +2,7 @@ import json
 import datetime
 
 from constant import ALARM_MARK, EMERGENCY, SEVERE, HIGH, MEDIUM, LOW, UNKNOWN, DATETIME_FORMAT
-from telegram import send_message, send_file
+from telegramapi import send_message, send_file
 
 
 def alert(data_path_set: set, platform_id: str):
@@ -10,8 +10,10 @@ def alert(data_path_set: set, platform_id: str):
         print("[+] No alert information exist.")
         return
     for data_path in data_path_set:
+        id = data_path.rsplit('/', 1)[1].rsplit('.', 1)[0]
         message = make_alert(data_path)
-        send_message(message, platform_id)
+        print(f"[*] Sending {id}...")
+        send_message(platform_id, message)
     # make_report()
     # send_file(filepath, platform_id)
 
@@ -46,7 +48,9 @@ def make_alert(data_path: str) -> str:
         alarm_mark_index = UNKNOWN
 
     tags = str(tags)[1:-1].replace('\'', '')
-
+    # There is some massive contents post exists, so that telegram can't send message.(MAX 4KB)
+    # So contents temporarily excluded.
+    # You can find original message form at bottom of codes.
     message = f"""{ALARM_MARK[alarm_mark_index]}
 
 Identifier: {identifier}
@@ -55,7 +59,6 @@ Severity: {severity}/100
 Uploaded: {upload_date}
 Title: {title}
 Tags: {tags}
-Contents: {contents}
 URL: {url}
 Post ID: {post_id}
 User ID: {user_id}
@@ -67,3 +70,19 @@ User Contents: {user_contents}"""
 
 def make_report(filepath: str) -> str:
     pass
+
+
+# message = f"""{ALARM_MARK[alarm_mark_index]}
+
+# Identifier: {identifier}
+# Severity: {severity}/100
+
+# Uploaded: {upload_date}
+# Title: {title}
+# Tags: {tags}
+# Contents: {contents}
+# URL: {url}
+# Post ID: {post_id}
+# User ID: {user_id}
+# User Name: {user_name}
+# User Contents: {user_contents}"""

@@ -1,5 +1,6 @@
 import requests
 import os
+import hashlib
 import json
 
 API_TOKEN = "7196855330:AAGNE87kJUD7a6nTjmD6NgInl1HfJBq4qug"
@@ -10,15 +11,19 @@ def user_identify():
     updates = get_updates()
     if not updates:
         return
+    print("[+] New updates available.")
     for update in updates:
         message = update.get("message")
         chat_id = message.get("chat").get("id")
         text = message.get("text")
-        if os.path.isdir(f"user/{text}"):
-            with open(f"user/{text}/profile.json", 'w+') as f:
+        if os.path.isdir(f"users/{text}"):
+            user_profile = dict()
+            hashed_id = hashlib.sha256(text.encode()).hexdigest()
+            print(f"[+] Update {hashed_id}(Hash).")
+            with open(f"users/{text}/profile.json", 'r') as f:
                 user_profile = json.load(f)
                 user_profile["platform_id"] = chat_id
-                user_id = user_profile["id"]
+            with open(f"users/{text}/profile.json", 'w') as f:
                 json.dump(user_profile, f)
     print(f"[+] (Telegram)User update done.")
 
@@ -29,7 +34,7 @@ def get_updates():
         with open(offset_filepath, 'r') as f:
             offset = int(f.read())
     except:
-        offset = 0
+        offset = None
     url = TELEGRAM_API_ADDRESS + "/getUpdates"
     params = {"offset": offset}
     response = requests.get(url, params=params)

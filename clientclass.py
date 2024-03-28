@@ -12,7 +12,7 @@ from constant import DATETIME_FORMAT
 class Client:
     def __init__(self, id) -> None:
         self.id = id
-        self.platform_id = str()
+        self.platform_id = "0"
         self.keywords = set()
         self.last_update = datetime.datetime(1900, 1, 1)
         self.previous_update = datetime.datetime(1900, 1, 1)
@@ -62,6 +62,8 @@ class Client:
             print("[+] No data detected.")
         else:
             print(f"[+] {len(data_path_set)} element(s) detected")
+            for data_path in data_path_set:
+                print(data_path)
             alert.alert(data_path_set, self.platform_id)
         self.previous_update = self.last_update
         self.last_update = datetime.datetime.now()
