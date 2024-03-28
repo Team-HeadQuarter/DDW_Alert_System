@@ -47,21 +47,21 @@ def main():
         client.create_profile()
     elif args.dpro:
         client.delete_profile()
-    client.load_profile()
-    if args.vpro:
-        client.get_profile()
-    if args.vkey:
-        client.get_keywords()
-    if args.akey:
-        client.add_keywords(args.akey)
-    if args.dkey:
-        client.delete_keywords(args.dkey)
-    if args.rkey:
-        client.reset_keywords()
-    if args.start:
-        telegram.user_identify()
-        client.start()
-    client.save_profile(True)
+    if client.load_profile(): 
+        if args.vpro:
+            client.get_profile()
+        if args.vkey:
+            client.get_keywords()
+        if args.akey:
+            client.add_keywords(args.akey)
+        if args.dkey:
+            client.delete_keywords(args.dkey)
+        if args.rkey:
+            client.reset_keywords()
+        if args.start:
+            telegram.user_identify()
+            client.start()
+        client.save_profile(True)
 
     print()
     end_time = datetime.datetime.now()

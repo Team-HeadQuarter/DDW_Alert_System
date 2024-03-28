@@ -84,7 +84,7 @@ class Client:
     def create_profile(self):
         filepath = f"users/{self.id}/profile.json"
         if not (os.path.isdir(self.id) and os.path.isfile(filepath)):
-            os.mkdir(self.id)
+            os.mkdir("users/" + self.id)
             self.save_profile(False)
             print(f"[+] Profile created.")
         else:
