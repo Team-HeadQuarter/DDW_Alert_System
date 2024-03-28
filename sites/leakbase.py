@@ -17,6 +17,8 @@ from selenium.webdriver.common.keys import Keys
 from constant import TOR_PATH, PROXIES, DATETIME_FORMAT
 
 
+URL = "https://leakbase.io"
+
 # Temporary weight
 LEAKBASE_INFO_TYPE = {
     # Type File
@@ -34,14 +36,14 @@ LEAKBASE_INFO_TYPE = {
 }
 
 
-def crawl(keywords: set) -> dict:
+def crawl(keywords: set) -> set:
     # cookies = establish_session("https://leakbase.io")
     urls = get_url_set(keywords)
-    check_diff(urls)
+    urls = check_diff(urls)
     raw_data_path_set = get_data(urls, cookies=None)
-    data_dict = process_data(raw_data_path_set)
+    data_path_set = process_data(raw_data_path_set)
 
-    return data_dict
+    return data_path_set
 
 
 # # requests
@@ -51,10 +53,10 @@ def crawl(keywords: set) -> dict:
 
 # Selenium
 def get_url_set(keywords: set) -> set:
+    thread_links_set = set()
     proxy_ip = '127.0.0.1'
     proxy_port = 9050
     domain = "https://leakbase.io"
-    thread_links_set = set()
     socks.set_default_proxy(socks.SOCKS5, proxy_ip, proxy_port)
     options = Options()
     # options.binary_location = TOR_PATH
@@ -73,7 +75,7 @@ def get_url_set(keywords: set) -> set:
     #     print("[+] Tor browser connected.")
     # except TimeoutException:
     #     print("[-] Tor browser connection timeout.")
-    #     return None
+    #     return set()
 
     try:
         element_xpath = '//*[@id="quickSearchTitle"]'
@@ -103,10 +105,10 @@ def get_url_set(keywords: set) -> set:
                     thread_links_set.add(full_url)
     except TimeoutException as e:
         print(f"[-] Timeout.({e})")
-        return None
+        return set()
     except NoSuchElementException as e:
         print(f"[-] Cannot find element.({e})")
-        return None
+        return set()
 
     driver.quit()
 
@@ -136,7 +138,6 @@ def get_data(url_list: set, cookies=None) -> set:
             with open(filepath, 'w') as f:
                 f.write(response.text)
             raw_data_path_set.add(filepath)
-            
         else:
             print(f"[-] Failed to crawl data.")
 
@@ -149,13 +150,14 @@ def process_data(raw_data_path_set: set) -> set:
         with open(raw_data_path, 'r') as f:
             raw_data = f.read()
 
+        thread_id = raw_data_path.rsplit('/', 1)[1].rsplit('.', 1)[0]
         bs = BeautifulSoup(raw_data, 'html.parser')
         domain = "leakbase"
+        severity = int()
         upload_date = datetime.datetime(1900, 1, 1, 0, 0, 0)
         title = str()
         url = str()
         tags = list()
-        thread_id = int()
         user_id = int()
         user_name = str()
         user_contents = str()
@@ -169,8 +171,7 @@ def process_data(raw_data_path_set: set) -> set:
             raw_tags = title_tags[1].find_all("span", class_="prefix-arbitors")
             for tag in raw_tags:
                 tags.append(tag.text)
-            contents = bs.find()
-            thread_id = url.rstrip('/').rsplit('.', 1)[1]
+            contents = bs.find("div", class_="bbWrapper").text
             user_id_name = user_date.find("a", class_="username u-concealed")
             user_id = int(user_id_name["data-user-id"])
             user_name = user_id_name.text
@@ -191,7 +192,7 @@ def process_data(raw_data_path_set: set) -> set:
                     "severity": severity,
                     "upload_date": upload_date,
                     "url": url,
-                    "thread_id": thread_id,
+                    "post_id": thread_id,
                     "title": title,
                     "tags": tags,
                     "contents": contents,

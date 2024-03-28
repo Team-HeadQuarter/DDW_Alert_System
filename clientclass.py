@@ -4,7 +4,7 @@ import os
 import shutil
 import schedule
 
-from sites import leakbase
+from sites import leakbase, blacksuit
 import alert
 from constant import DATETIME_FORMAT
 
@@ -52,10 +52,12 @@ class Client:
 
 
     def update(self):
+        data_path_set = set()
         print(f"[+] Start update({datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')})")
         self.remain_time = datetime.timedelta(minutes=10)
         print("[*] Update information...")
-        data_path_set = leakbase.crawl(self.keywords)
+        data_path_set |= leakbase.crawl(self.keywords)
+        # data_path_set |= blacksuit.crawl(self.keywords)
         if len(data_path_set) == 0:
             print("[+] No data detected.")
         else:

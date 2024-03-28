@@ -1,19 +1,21 @@
 TOR_PATH = "/Applications/Tor Browser.app/Contents/MacOS/firefox"
 
 PROXIES = {
-    "http": "socks5://127.0.0.1:9050",
-    "https": "socks5://127.0.0.1:9050"
+    "http": "socks5h://127.0.0.1:9050",
+    "https": "socks5h://127.0.0.1:9050"
 }
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36"
 
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
-ALARM_MARK = ["🔴 Critical Alert", "🟡 Serious Alert", "🟢 Minor Alert", "⚫️ Unknown Alert"]
-CRITICAL = 0
-SERIOUS = 1
-MINOR = 2
-UNKNOWN = 3
+ALARM_MARK = ["⚫️ Emergency Alert", "🟣 Severe Alert", "🔴 High Alert", "🟡 Medium Alert", "🟢 Low Alert", "🔵 Unknown Alert"]
+EMERGENCY = 0
+SEVERE = 1
+HIGH = 2
+MEDIUM = 3
+LOW = 4
+UNKNOWN = 5
 
 """
 Alert Data Format(Dictionary)

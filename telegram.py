@@ -8,19 +8,19 @@ TELEGRAM_API_ADDRESS = f"https://api.telegram.org/bot{API_TOKEN}"
 
 def user_identify():
     updates = get_updates()
-    if updates == []:
+    if not updates:
         return
     for update in updates:
         message = update.get("message")
         chat_id = message.get("chat").get("id")
         text = message.get("text")
-        if os.path.isdir(text):
-            with open(f"{text}/profile.json", 'w+') as f:
+        if os.path.isdir(f"user/{text}"):
+            with open(f"user/{text}/profile.json", 'w+') as f:
                 user_profile = json.load(f)
                 user_profile["platform_id"] = chat_id
                 user_id = user_profile["id"]
                 json.dump(user_profile, f)
-                print(f"[+] (Telegram)User {user_id} is updated.")
+    print(f"[+] (Telegram)User update done.")
 
 
 def get_updates():
@@ -36,13 +36,12 @@ def get_updates():
     ok = response.json().get("ok")
     if not ok:
         print("[-] (Telegram)Request getUpdates failed.")
-        return []
+        return None
     updates = response.json().get("result")
     if not updates:
         print("[+] (Telegram)No new updates.")
-        return []
+        return None
     update_id = updates[-1].get("update_id") + 1
-    print("[+] (Telegram)Update users id.")
     with open(offset_filepath, 'w') as f:
         f.write(str(update_id))
     
