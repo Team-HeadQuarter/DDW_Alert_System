@@ -14,8 +14,7 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 
 # from sites.common import establish_session
-from constant import TOR_PATH, PROXIES, DATETIME_FORMAT
-
+from constant import PROXIES, DATETIME_FORMAT
 
 URL = "https://leakbase.io"
 
@@ -24,15 +23,17 @@ LEAKBASE_INFO_TYPE = {
     # Type File
     "Bak": 1, "Json": 5, "HTML": 2, "XLSX": 6, "Doc": 4, "Sql": 8, "Csv": 7,
     # Log
-    "Stealer": 9 ,"Backup": 1 ,"Url:User:Pw": 8 ,"Logs": 2,
+    "Stealer": 9, "Backup": 1, "Url:User:Pw": 8, "Logs": 2,
     # Database
-    "EU": 1, "Usa": 5, "No Pass": 4, "Dehashed": 8, "Num:Pass": 7, "Log:Pass": 6, "Mail:Pass": 8, "Btc": 5, "Game": 1, "Valid": 10, "Cloud": 8, "Hash": 5, "Mix": 8, "Shop": 4,
+    "EU": 1, "Usa": 5, "No Pass": 4, "Dehashed": 8, "Num:Pass": 7, "Log:Pass": 6, "Mail:Pass": 8, "Btc": 5, "Game": 1,
+    "Valid": 10, "Cloud": 8, "Hash": 5, "Mix": 8, "Shop": 4,
     # Accounts
     "Nas": 7, "FTP": 8, "WP": 5, "Mega.nz": 5, "Accs": 0, "Cpanel": 0, "Hosting": 6, "Cookies": 7, "PWD list": 10,
     # Forum
     "Request": 3, "Questions": 2, "News": 4,
     # Ungrouped
-    "© Chucky": 10, "Closed": 1, "Link Dead": 0, "Premium": 10, "Credits": 7, "Http/s": 3, "Software": 8, "Repeat": 2, "Hacking": 9, "Methods": 9, "Other": 3, "Socks 4": 1, "Socks 5": 2, "Cracked": 3, "Config": 1
+    "© Chucky": 10, "Closed": 1, "Link Dead": 0, "Premium": 10, "Credits": 7, "Http/s": 3, "Software": 8, "Repeat": 2,
+    "Hacking": 9, "Methods": 9, "Other": 3, "Socks 4": 1, "Socks 5": 2, "Cracked": 3, "Config": 1
 }
 
 
@@ -94,7 +95,7 @@ def get_url_set(keywords: set) -> set:
             element.send_keys(Keys.RETURN)
 
             time.sleep(1)
-            
+
             no_results_xpath = '/html/body/div[1]/div[3]/div/div[7]/div[1]/div/div[2]/div/div/div/div'
             wait.until(expected_conditions.presence_of_element_located((By.XPATH, no_results_xpath)))
 
@@ -106,14 +107,14 @@ def get_url_set(keywords: set) -> set:
                         print(f"[+] No results found for keyword: {keyword}")
                         continue
             except NoSuchElementException:
-                pass   
-            
+                pass
+
             search_results_xpath = '//*[@id="quicksearch-result"]/descendant::a'
             wait.until(expected_conditions.presence_of_element_located((By.XPATH, search_results_xpath)))
-            
+
             search_results_element = driver.find_element(By.XPATH, '//*[@id="quicksearch-result"]')
             search_results_html = search_results_element.get_attribute('outerHTML')
-            
+
             soup = BeautifulSoup(search_results_html, 'html.parser')
             thread_links = soup.find_all('a')
             for link in thread_links:
@@ -178,10 +179,11 @@ def process_data(raw_data_path_set: set) -> set:
         user_id = int()
         user_name = str()
         user_contents = str()
-        
+
         try:
             user_date = bs.find("div", class_="p-description")
-            upload_date = datetime.datetime.strptime(user_date.find("time")["datetime"], "%Y-%m-%dT%H:%M:%S%z").strftime(DATETIME_FORMAT)
+            upload_date = datetime.datetime.strptime(user_date.find("time")["datetime"],
+                                                     "%Y-%m-%dT%H:%M:%S%z").strftime(DATETIME_FORMAT)
             url = bs.find("meta", {"property": "og:url"}).get("content")
             title_tags = bs.find("h1", class_="p-title-value").contents
             title = title_tags[0]
@@ -228,10 +230,9 @@ def process_data(raw_data_path_set: set) -> set:
             print(f"[+] JSON data generated.({data_path})")
 
             data_path_set.add(data_path)
-            
+
         except Exception as e:
             os.remove(raw_data_path)
             print(f"[-] Failed to generate data.(URL: {url} Exception: {e})")
 
     return data_path_set
-    

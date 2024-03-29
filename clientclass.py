@@ -20,7 +20,6 @@ class Client:
         # Global variable
         self.remain_time = None
 
-
     def start(self) -> None:
         flag = False
 
@@ -30,11 +29,11 @@ class Client:
         if len(self.keywords) == 0:
             print(f"[-] There is no keyword.(Update with \'-ak\' option)")
             flag = True
-        
+
         if flag:
             return
-        
-        print('-'*64)
+
+        print('-' * 64)
 
         update_schedule = schedule.every(10).minutes.do(self.update)
         print_schedule = schedule.every(1).second.do(self.print_remain_time)
@@ -50,7 +49,6 @@ class Client:
                 print("[+] Terminate process")
                 schedule.clear()
                 break
-
 
     def update(self):
         data_path_set = set()
@@ -70,19 +68,16 @@ class Client:
         self.last_update = datetime.datetime.now()
         print("[+] Update done!")
         print("[+] Update after 10 mins...")
-        print("-"*64)
-
+        print("-" * 64)
 
     def print_remain_time(self):
         self.remain_time -= datetime.timedelta(seconds=1)
         print(f"\033[K[*] Remain time: {self.remain_time} (\'Ctrl + C\' to stop program.)", end='\r')
 
-
     def get_profile(self):
         filepath = f"users/{self.id}/profile.json"
         with open(filepath, 'r') as f:
             print(f.read())
-
 
     def create_profile(self):
         filepath = f"users/{self.id}/profile.json"
@@ -93,7 +88,6 @@ class Client:
         else:
             print(f"[-] Profile already exist.({self.id})")
 
-
     def delete_profile(self):
         filepath = f"users/{self.id}"
         if os.path.isdir(filepath):
@@ -102,20 +96,17 @@ class Client:
         else:
             print(f"[-] Profile not exist.({self.id})")
 
-
     def get_keywords(self) -> None:
         if len(self.keywords) == 0:
             print("[+] Keyword not exist.")
         else:
             print(f"[+] Keywords set -> {sorted(self.keywords)}")
 
-
     def add_keywords(self, keywords: list) -> None:
         self.keywords.update(keywords)
         print(f"[+] Keywords added.({keywords})")
         self.get_keywords()
 
-    
     def delete_keywords(self, keywords: list) -> None:
         discard_list = []
         absence_list = []
@@ -131,12 +122,10 @@ class Client:
             print(f"[-] Keywords not exist.({absence_list})")
         self.get_keywords()
 
-    
     def reset_keywords(self) -> None:
         self.keywords.clear()
         print("[+] Keyword list reset")
         self.get_keywords()
-
 
     def load_profile(self) -> bool:
         filepath = f"users/{self.id}/profile.json"
@@ -152,7 +141,6 @@ class Client:
         except Exception as e:
             print(f"[-] Failed to load profile {filepath}...({e})")
             return False
-
 
     def save_profile(self, flag: bool) -> None:
         filepath = f"users/{self.id}/profile.json"

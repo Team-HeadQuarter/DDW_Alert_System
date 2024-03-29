@@ -5,7 +5,6 @@ import json
 
 from constant import PROXIES
 
-
 URL = "http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion"
 
 
@@ -28,14 +27,15 @@ def get_card_id(keywords: set) -> set:
             soup = BeautifulSoup(response.text, 'html.parser')
             try:
                 card = soup.find("div", class_="title")
-                id = card.find("a")["href"][4:]
-                card_id_set.add(id)
+                card_id = card.find("a")["href"][4:]
+                card_id_set.add(card_id)
             except:
                 print(f"[+] Not found records(Keyword: {keyword})")
         else:
             print(f"[-] Response not received.")
 
     return card_id_set
+
 
 # Need to add function that check new posts about the keyword.
 def check_diff(card_id_set: set) -> set:
@@ -72,7 +72,7 @@ def process_data(raw_data_path_set: set) -> set:
     for raw_data_path in raw_data_path_set:
         with open(raw_data_path, 'r') as f:
             raw_data = f.read()
-        
+
         card_id = raw_data_path.rsplit('/', 1)[1].rsplit('.', 1)[0]
         bs = BeautifulSoup(raw_data, 'html.parser')
         domain = "blacksuit"
@@ -85,7 +85,7 @@ def process_data(raw_data_path_set: set) -> set:
         user_id = 1
         user_name = "BLACK SUIT"
         user_contents = "http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion"
-        
+
         try:
             severity = -1
             title = bs.find("div", class_="title").text
@@ -115,7 +115,7 @@ def process_data(raw_data_path_set: set) -> set:
             print(f"[+] JSON data generated.({data_path})")
 
             data_path_set.add(data_path)
-            
+
         except Exception as e:
             os.remove(raw_data_path)
             print(f"[-] Failed to generate data.(URL: {url} Exception: {e})")

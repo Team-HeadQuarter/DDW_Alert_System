@@ -1,17 +1,16 @@
 import json
-import datetime
 
-from constant import ALARM_MARK, EMERGENCY, SEVERE, HIGH, MEDIUM, LOW, UNKNOWN, DATETIME_FORMAT
-from telegramapi import send_message, send_file
+from constant import ALARM_MARK, EMERGENCY, SEVERE, HIGH, MEDIUM, LOW, UNKNOWN
+from telegramapi import send_message
 
 
 def alert(data_path_set: set, platform_id: str):
     for data_path in data_path_set:
         divide_path = data_path.rsplit('/', 2)
         domain = divide_path[1]
-        id = divide_path[2].rsplit('.', 1)[0]
+        card_id = divide_path[2].rsplit('.', 1)[0]
         message = make_alert(data_path)
-        print(f"[*] Sending message({domain}_{id})...")
+        print(f"[*] Sending message({domain}_{card_id})...")
         send_message(platform_id, message)
     # make_report()
     # send_file(filepath, platform_id)

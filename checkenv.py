@@ -1,6 +1,5 @@
 import os
 
-
 SITES = ["leakbase", "blacksuit"]
 
 
@@ -21,8 +20,8 @@ def check_environment():
     # Add after decide data hierachy.
     # Crawler don't have to crawl same data again.
     # Can provide this function with add 'sented_user' to JSON file.
-            
+
     # But updated post is consideration.
-    # If its thread id is same, identifier must changed.
+    # If its thread id is same, identifier must be changed.
 
     print("[+] Environment checked.")
