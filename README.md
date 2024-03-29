@@ -64,17 +64,22 @@ Regularly review the website's terms of service and privacy policy for any updat
 
 1. Open terminal
 2. Go to directory that the 'main' files exist
-3. Profile management options
+3. Instruction format
+    - `python main.py [options] [youridhere]`
+    - If it is your first time using this program, you should make your profile first 
+    use `python main.py -cp youridhere`
+4. Profile management options
     - View client profiles, use -vp(--vpro) option
     - Create a client profile, use -cp(--cpro) option
     - Delete a client profile, use -dp(--dpro) option
-4. keyword management options
+5. keyword management options
     - View a list of keywords, use -vk(--vkey) option
     - Add keywords[separated by spaces], use -ak(--akey) option
     - Delete keyword[separated by spaces], use -dk(--dkey) option
     - Resetting the keyword list, use -rk(--rkey) option
-5. Alert system options
+6. Alert system options
     - Start the alert system, use -s(--start) option
+
 
 More information would be provide by write command  
 `sudo python main.py -h` or `sudo python main.py --help`
