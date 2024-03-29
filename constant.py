@@ -5,13 +5,11 @@ PROXIES = {
     "https": "socks5h://127.0.0.1:9050"
 }
 
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 \
-Safari/537.36"
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36"
 
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
-ALARM_MARK = ["⚫️ Emergency Alert", "🟣 Severe Alert", "🔴 High Alert", "🟡 Medium Alert", "🟢 Low Alert",
-              "🔵 Unknown Alert"]
+ALARM_MARK = ["⚫️ Emergency Alert", "🟣 Severe Alert", "🔴 High Alert", "🟡 Medium Alert", "🟢 Low Alert", "🔵 Unknown Alert"]
 EMERGENCY = 0
 SEVERE = 1
 HIGH = 2
