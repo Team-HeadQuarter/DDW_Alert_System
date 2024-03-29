@@ -3,7 +3,7 @@ import os
 import hashlib
 import json
 
-API_TOKEN = "7196855330:AAGNE87kJUD7a6nTjmD6NgInl1HfJBq4qug"
+API_TOKEN = "6410780323:AAGARj38315K8Num-LK_uGOMWNXQj268Lhc"
 TELEGRAM_API_ADDRESS = f"https://api.telegram.org/bot{API_TOKEN}"
 
 
@@ -11,7 +11,7 @@ def user_identify():
     updates = get_updates()
     if not updates:
         return
-    print("[+] New updates available.")
+    print("[+] (Telegram)New updates available.")
     for update in updates:
         message = update.get("message")
         chat_id = message.get("chat").get("id")
@@ -19,12 +19,12 @@ def user_identify():
         if os.path.isdir(f"users/{text}"):
             user_profile = dict()
             hashed_id = hashlib.sha256(text.encode()).hexdigest()
-            print(f"[+] Update {hashed_id}(Hash).")
+            print(f"[+] (Telegram)Update {hashed_id}(Hash).")
             with open(f"users/{text}/profile.json", 'r') as f:
                 user_profile = json.load(f)
                 user_profile["platform_id"] = chat_id
             with open(f"users/{text}/profile.json", 'w') as f:
-                json.dump(user_profile, f)
+                json.dump(user_profile, f, indent=4)
     print(f"[+] (Telegram)User update done.")
 
 

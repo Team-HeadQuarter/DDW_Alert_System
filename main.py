@@ -39,6 +39,7 @@ def main():
     args = parser.parse_args()
     
     checkenv.check_environment()
+    telegramapi.user_identify()
 
     # Explain option order actions at document.
     client = clientclass.Client(args.id)
@@ -59,7 +60,6 @@ def main():
         if args.rkey:
             client.reset_keywords()
         if args.start:
-            telegramapi.user_identify()
             client.start()
         client.save_profile(True)
 

@@ -8,8 +8,8 @@ from constant import PROXIES
 URL = "http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion"
 
 
-def crawl(keywords: set) -> dict:
-    card_id_set = get_card_id(keywords)
+def crawl(keywords: set) -> set:
+    card_id_set = get_card_id_set(keywords)
     card_id_set = check_diff(card_id_set)
     raw_data_path_set = get_data(card_id_set)
     data_path_set = process_data(raw_data_path_set)
@@ -17,7 +17,7 @@ def crawl(keywords: set) -> dict:
     return data_path_set
 
 
-def get_card_id(keywords: set) -> set:
+def get_card_id_set(keywords: set) -> set:
     card_id_set = set()
     for keyword in keywords:
         data = {"search": keyword}
